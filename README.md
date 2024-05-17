@@ -1,58 +1,63 @@
 # Collaborative_Filtering_Movie_Recommendation
-> [!WARNING]
-> There is no information about athletes for team competitions that consist of more than 2 participants. Only team records.
-> 
-> There are no results for qualification rounds. For instance, event 100-m men contains only final results without semi-finals and other hits.
+> [!IMPORTANT]
+> The dataset (CSV) Files are too large to be uploaded into Github, thus, please refer to this link if you would like to access the files.
+>
+> https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset/data 
 
 ### Introduction to Study:
 
-The 2024 Olympics known as Paris 2024 are scheduled to take place from July 26 to August 11, 2024. The Olympic Games are a very popular, multicultural celebration to share in the world of sports and so much more. As there have been many changes and modifications to the Olympics, the focus of this study is to identify trends in the performance of countries over time. This study focused on the future performances such as the 2024 Olympics, of top-performing countries in the Olympics with the calculation of the total medals won. In this study, it’s hypothesized that the accumulation of previous medals correlated with an increased potential for winning an equal or greater amount of medals in the future Olympic Games. 
+This is a dataset that is focused on the metadata for movies. It contains around 26 million ratings from around 270,000 users for the 45,000 movies. This study aims to identify trends and patterns of the metadata containing a large amount of movies. Then create a model that would look over the categorical aspects of the dataset of the inputted movie to recommend movies that users would take interest in. Furthermore, using collaborative filtering, there would be another model that utilizes deep learning that can take insights from similar users who watched similar movies and ratings to recommend a movie. 
 
 ### Process and Challenges:
 
-Initially, the three datasets (```athletes_data```, ```hosts_data```, ```medals_data```) are merged to form ```olympic_data```, containing around 17,000 rows of data. The cleaning consisted of removing columns that had more than 20% of null values. There were also a few data entries that needed to be renamed, so that was done with a class map. Some important variables primarily used were ```medal_type``` (gold, silver, or bronze), ```game_season``` (Winter or Summer), ```game_year```, ```athlete_year_birth```, ```discipline_title``` (the overall discipline groups), ```country_name```, ```athlete_full_name```. These variables allowed the creation of functions and visualizations that showcased the countries’ information on their athletes and medals, and how those are correlated with their success in the Olympics. 
+When first reading the files (```movies```, ```credits```), there were some poorly inputted data, which were removed. As for a few of the categorical columns like ```genres``` and ```original_title```, it was formatted in a different way, which required splitting the text and placing commas to separate them. After cleaning the data, many graphs and visualizations are made to showcase the connections between variables in the dataset. 
 
-Throughout this study, a challenge that was encountered was how to effectively present the data in a comprehensible manner. After a few trials, a function called ```plot_heatmap``` was created that displayed how the number of appearances a discipline made in the Olympics. In the grid layout heatmap, a green box (discipline was played) or a white box (discipline not played). 
+The first movie recommendation model utilizes a weighted average. This had a formula that was taken from IMDB that calculates the rating with a weight, as some votes don't have the same impact. Once the weighted average was calculated, the model can now use cosine similarity and the weight to find similar movies to the selected movie. It also shows the similarity score, how similar it is to the movie, and the final score, what the predicted rating would be.
 
 > [!NOTE]
-> This graph shows the Olympic Summer Season and disciplines are listed in alphabetical order[^1]. Some newly added Summer disciplines: Cycling BMX Freestyle, Karate, Skateboarding, Sport Climbing, and Surfing.
+> This is the formula: (WR) = (v ÷ (v+m)) × R + (m ÷ (v+m)) × C
 
-Another important function is ```plot_trends``` which generates a bar chart of the country’s totals of medals (gold, silver, bronze, or all) by each Olympic game for the season (Summer, Winter, or both). It provided a more individualized overview of the country as well as the trend of the medals won at the Olympics. 
+The next second model took a different approach, which is known as collaborative filtering. This would take the ratings of other users and find recommend a movie that had a good rating from similar users. This required the set up of another dataset, called ```ratings```. First of all, there was a need to construct a user profile of the selected user, which contains all of their movies watched and ratings. Then using cosine similarity once again to calculate and find the top 5 most similar users from the dataset batch. Tensorflow Keras was used as a neural network model to determine predicting ratings of high-rated movies from similar users. Thus, the top 5 movies from that list would be recommended to that particular user. 
 
-Another challenge arose due to limited experience in handling time series datasets, so there was time dedicated to researching to understand the necessary concepts and techniques. Afterward, there were difficulties with the integration, as the time series prediction models and the ```olympic_data``` setup didn’t complement each other. After careful debugging, the time series models successfully predicted 4 Olympic Games (2024 2026, 2028, 2030).
+A challenge that was prevalent in this study was a need to learn about cosine similarity, which is a metric used to determine the cosine distance between two objects and is used commonly in recommendation systems such as movie and book recommenders. As this was the first recommender system project, there was a lack of knowledge about cosine similarity, which took lots of time to try to understand and implement into the code. 
+
+The implementation of deep learning and neural networks in this study was also an obstacle that took lots of time to debug and decipher what was happening behind the scenes. Due to the formatting of the dataset in the beginning, there is a possibility that there was a lack of care for certain columns and variables that made it more difficult to implement deep learning models. Also, there were some packages that had issues running on the coding platform which required to use of different methods, but luckily those were sorted out pretty quickly. 
+
+> [!WARNING]
+> Another challenge in this study was that the dataset was very large, as the second model had a dataset with the size of (10969249, 7), which required random batches to lessen the time and make it easier to compute. Luckily, it was easy to separate the large dataset into batches, but that made a few iterations lacking accuracy as it's in batches and not actually using the entire dataset to scan for similar users. 
 
 ### Observations and Interpretations:
 
-The USA is very dominant in the Olympics with a total of up to 2442 medals, with Germany trailing behind by 868 medals. This massive lead may have been due to the boycott from the Soviet Union and their allies against the 1984 Olympics. This boycott led the USA to have reduced competition and it boosted their total medal counts to make them the medal count leaders of the Olympics. Also, this Olympics was held in the USA, and they could have done well due to their home-court advantage. Out of the 5 Olympics that were held in the USA, the USA has won 4 of those Olympics. The home-court advantage could have led to more national pride and motivation to perform far better than their competitors. 
+The USA is very dominant in the production of movies as it almost reached the amount of producing 20,000 movies. Do note that this dataset is an old dataset, therefore, the USA will most definitely cross that amount in the present. With the establishment of Hollywood, it's safe to assume that most of the movie and film productions are held in the USA where the USA companies invest and produce them. As well as English being a universal language, films are created in English in the USA that are already catered to a majority of the world's population. 
 
 > [!NOTE]
-> This graph shows the sudden spike for the USA in 1984 and the immediate drop from the Soviet Union and Germany[^2].
+> This graph shows the large gap that the USA is leading in the production of movies[^1].
+> 
+> This graph shows the primary language in movies[^2].
 
-Due to the Olympics's separation of the Summer and Winter seasons, each season happens every 2 years, and the graphs showed a cyclical pattern. As there are more disciplines in the Summer season, the common pattern is a spike up during the Summer Olympics and a drop in the Winter Olympics. On the contrary, Norway has shown an inverse to this pattern as they demonstrated exceptional performance in a majority of the Winter Olympics. Thus, they are taking a majority of the medals in the winter and this could be due to their cultural importance in winter sports as it often snows in Norway. In addition, the stunning scenery and backgrounds in Norway could have promoted a more outdoor lifestyle, which exposed their athletes to outdoor winter sports. Followed up with their strong overall legacy in winter sports, definitely served as an inspiration for them to continue to perform well. This can be seen in their top two disciplines, which are cross-country skiing and speed skating, signaling their investment into winter sports. 
+It's interesting to see that the top genre across movies is Drama, which is followed by Comedy and Thriller. Regardless, there is still a big gap between these three genres. Movies might place Drama inside as they tap into the complexities of emotions, relationships, and experiences that the audience can feel. These highlighted aspects of storytelling keep the audience engaged and invested in the movie, which is probably the reason why Dramas are the most common genre in movies. Most people watch movies and stay watching as they are curious and as previously mentioned, invested in it, thus having drama makes it relatable and dives deep to connect with them on a more personal level, especially from the actors, storyline, music, and backgrounds. 
 
 > [!IMPORTANT]
-> Unlike the rest of the top-performing countries in the Olympics, only Norway shows the opposite performance to the cyclical performance the other countries have. This graph can be interpreted that as Norway won lots of medals in the Winter Olympics and there are fewer disciplines during those games, it's safe to say that Norway is winning a majority of those medals, signaling their dominance in the winter sports[^3].
+> The Drama genre leads as the number 1 genre in movies. The function that was used to organize the genres did a total summation of the genres provided, which means that even if the movie doesn't have drama as the main genre, it's still mentioned in the genre listing[^3].
 
-China has never gotten an Olympic medal until the 1984 Olympics. As mentioned earlier about the lesser competition during the 1984 Olympics, China was able to make its mark. This could have been a way where ‘success breeds success’ and it might be paired with a recent president change around that time, the government might have had a shift in their investments after winning around 25 medals in the 1984 and 1988 Olympics. They have then a strategic focus on certain key sports, where they have been known as a powerhouse in those sports, such as table tennis. Their concentrated efforts continue to maximize their medal-winning potential through talent identification as China strengthens its already winning disciplines. From the looks of the upward trend on their medal counts in the Olympics, China must be able to recruit and develop great athletes in their dominant disciplines, so they continue to perform very well and secure even more medals every Olympics. 
-
-> [!NOTE]
-> This graph shows how China had only success after the 1984 Olympics and has been performing very well afterward[^4].
-
-The median Olympic athlete's year of birth from this dataset is between the years 1991 to 1996. Therefore the newer generation of Olympic athletes would be around 25 years old and younger. The performance analysis of the newer generation revealed that most if not all of the medals they have won were gold medals. This shows that young athletes have lots of potential and success from their early specialization in their disciplines. They must have had better teaching, training techniques, and training equipment which exponentially increases the number of young athletes competing at the highest level. In addition, the young athletes are also prioritizing their country’s top disciplines. For example, both Katie Ledecky and Robert Finke are in swimming, which is USA’s second top discipline. 
-
-> [!NOTE]
-> This graph shows the distribution of all the birth years of the athletes in bins[^5].
+It's also worth mentioning that throughout the study, lots of users were selected to test the performance of the model. An observation that was made was that the more movies that the user has watched, the higher the ratings are usually predicted by the collaborative filtering model. It would be assumed that due to the larger amount of data to train the model with, there would also be a larger amount of possible recommendations. Thus when the predicting modeling is done, the top 5 recommendations would have a very high predicted rating. 
 
  ### Conclusion:
 
-Based on the time series prediction model results[^6], the USA will win the most amount of medals (98 medals) in the 2024 Summer Olympics. It was hypothesized that there is a correlation between the accumulation of medals from the past, signaling previous success, and future performances. This showed that they already had the experience of winning, therefore, they should be able to replicate that for future Olympic Games. Following the 2024 Olympics, it is predicted that Germany will lead in the 2026 Winter Olympics (32 medals), China will lead in the 2028 Summer Olympics (107 medals), and Norway will lead in the 2030 Winter Olympics (30 medals). As previously observed, China has been the rising star in the Olympics since the 1984 Olympics and Norway has always shown dominance in the Winter Olympics. 
+Based on the collaborative filtering movie recommendation model, for the user with the ID of 4, the following movies are recommended with predicted ratings ranging from 5 to 4.725:
+1. The Goddess
+2. Dog Day Afternoon
+3. Frances
+4. License to Wed
+5. I Love You to Death
 
-For future research, obtaining more data regarding the events that contain more than 2 athletes would change the predictions as this current prediction model is projecting less due to less amount of data regarding team events and disciplines. In addition, the factors were very limited in the prediction of the future medal amounts as it’s not just based on previous medals won. So being able to add more data into the prediction dataset would be better, such as the amount of new disciplines being added to the Olympics, the number of young and veteran athletes, and also more data about the country itself. This data would consist of GDP, training programs, coaches, and investments, which would be very helpful to make a more accurate prediction. 
+Due to the lack of knowledge of cosine similarity, there could have been more fine-tuning and testing to improve the accuracy of the movie recommendations. Also, with a more powerful device, there could easily be a better way to access the large amounts of data of ratings from users that can make it easier to find similar users to the selected users that would provide more movie recommendation options.
+
+Some other areas of interest would be to combine Natural Language Processing (NLP) into the collaborative filtering model to further personalize the recommendations based on the previously watched movies' overviews with the provided options. This can also be applied to the genres, actors, crews, etc.
+
+Looking to the future, this study could have been fed some personal ratings from myself and output a few recommendations for myself to try. Then, I could personally validate the model based on the predicted ratings and recommended movies.  
 
 ### Footnotes:
-[^1]: [Plot Heatmap Function](https://github.com/jalwz17/Olympic_Medals_Analysis/assets/95889788/3b21e984-42bc-4629-af60-01ff3a71889c)
-[^2]: [Medal Counts by Country Over the Years](https://github.com/jalwz17/Olympic_Medals_Analysis/assets/95889788/f427397c-214c-4db7-ad25-1694a5eac88c)
-[^3]: [Number of All Medals Won by Norway during Both Seasons](https://github.com/jalwz17/Olympic_Medals_Analysis/assets/95889788/95aee862-52cf-4970-8383-64bac8e17f14)
-[^4]: [Number of All Medals Won by China during Both Seasons](https://github.com/jalwz17/Olympic_Medals_Analysis/assets/95889788/4ea634cd-9f34-4b8d-94e0-a806bdf04ee8)
-[^5]: [Count of Athletes by Year of Birth with Trend Line](https://github.com/jalwz17/Olympic_Medals_Analysis/assets/95889788/3ef473c7-9efd-458f-94e9-2a6ede441d1f)
-[^6]: [Example: SARIMAX Prediction for USA](https://github.com/jalwz17/Olympic_Medals_Analysis/assets/95889788/73c9babb-16e6-476e-9ff2-fd77446f22b8)
+[^1]: [Top Production Countries](https://github.com/jalwz17/Movie-Recommendation/assets/95889788/0b47a45b-fcdd-42e0-9130-ddbbec7f4500)
+[^2]: [Primary Language in Movies](https://github.com/jalwz17/Movie-Recommendation/assets/95889788/750d72c6-ed28-4452-8efd-950a4c83cb0e)
+[^3]: [Top Genres](https://github.com/jalwz17/Movie-Recommendation/assets/95889788/edb4c5d6-075d-4f36-b1c2-64cdf8520f3c)
